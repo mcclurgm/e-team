@@ -1,0 +1,76 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Localizer	../attitude-motion/simplified1-no-drag.py	/^class Localizer():$/;"	kind:class	line:7
+__init__	../attitude-motion/simplified1-no-drag.py	/^    def __init__(self):$/;"	kind:member	line:9
+add	../opencv/ops-2.py	/^add = cv2.add(img1, img2) # can img1+img2 technically, but weird. don't.$/;"	kind:variable	line:16
+basic-ops.py	../opencv/basic-ops.py	1;"	kind:file	line:1
+cap	../opencv/video-1.py	/^cap = cv2.VideoCapture(0)$/;"	kind:variable	line:5
+cv2	../opencv/basic-ops.py	/^import cv2$/;"	kind:namespace	line:2
+cv2	../opencv/drawing.py	/^import cv2$/;"	kind:namespace	line:2
+cv2	../opencv/ops-2.py	/^import cv2$/;"	kind:namespace	line:2
+cv2	../opencv/py-intro.py	/^import cv2$/;"	kind:namespace	line:1
+cv2	../opencv/threshold.py	/^import cv2$/;"	kind:namespace	line:2
+cv2	../opencv/video-1.py	/^import cv2$/;"	kind:namespace	line:2
+drawing.py	../opencv/drawing.py	1;"	kind:file	line:1
+dronekit-hello.py	../attitude-motion/dronekit-hello.py	1;"	kind:file	line:1
+dronekit_sitl	../attitude-motion/dronekit-hello.py	/^import dronekit_sitl$/;"	kind:namespace	line:1
+dst	../opencv/ops-2.py	/^dst = cv2.add(img1_bg, watch_fg)$/;"	kind:variable	line:33
+final_position	../attitude-motion/simplified1-no-drag.py	/^    def final_position(self, x0, v0, time_step, angle):$/;"	kind:member	line:39
+final_position_simplified	../attitude-motion/dronekit-hello.py	/^def final_position_simplified(x0, v0, time_step, angle):$/;"	kind:function	line:47
+final_velocity	../attitude-motion/simplified1-no-drag.py	/^    def final_velocity(self, v0, time_step, angle):$/;"	kind:member	line:36
+final_velocity_simplified	../attitude-motion/dronekit-hello.py	/^def final_velocity_simplified(v0, accel, time_step, angle):$/;"	kind:function	line:44
+g	../attitude-motion/dronekit-hello.py	/^g = 9.80655$/;"	kind:variable	line:25
+gauss	../opencv/threshold.py	/^gauss = cv2.adaptiveThreshold(grayscale, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,$/;"	kind:variable	line:11
+get_acceleration	../attitude-motion/dronekit-hello.py	/^def get_acceleration(force, angle, mass): # angle in radians, using np.pi as pi$/;"	kind:function	line:40
+grayscale	../opencv/threshold.py	/^grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)$/;"	kind:variable	line:5
+img	../opencv/basic-ops.py	/^img = cv2.imread("watch.jpg", cv2.IMREAD_COLOR)$/;"	kind:variable	line:4
+img	../opencv/drawing.py	/^img = cv2.imread("watch.jpg", cv2.IMREAD_COLOR)$/;"	kind:variable	line:4
+img	../opencv/py-intro.py	/^img = cv2.imread('watch.jpg', cv2.IMREAD_GRAYSCALE)$/;"	kind:variable	line:5
+img	../opencv/threshold.py	/^img = cv2.imread("bookpage.jpg", cv2.IMREAD_COLOR)$/;"	kind:variable	line:4
+img1	../opencv/ops-2.py	/^img1 = cv2.imread("img1.png", cv2.IMREAD_COLOR)$/;"	kind:variable	line:4
+img1_bg	../opencv/ops-2.py	/^img1_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)$/;"	kind:variable	line:31
+img2	../opencv/ops-2.py	/^img2 = cv2.imread("img2.png", cv2.IMREAD_COLOR)$/;"	kind:variable	line:5
+integrate	../attitude-motion/dronekit-hello.py	/^import scipy.integrate as integrate$/;"	kind:namespace	line:3
+integrate	../attitude-motion/simplified1-no-drag.py	/^import scipy.integrate as integrate$/;"	kind:namespace	line:2
+mask_inv	../opencv/ops-2.py	/^mask_inv = cv2.bitwise_not(mask)$/;"	kind:variable	line:30
+mass	../attitude-motion/dronekit-hello.py	/^mass = 1.99$/;"	kind:variable	line:24
+matplotlib	../opencv/py-intro.py	/^import matplotlib.pyplot as plt$/;"	kind:namespace	line:3
+net_horizontal_force_from_angle_simplified	../attitude-motion/dronekit-hello.py	/^def net_horizontal_force_from_angle_simplified(angle):$/;"	kind:function	line:27
+np	../attitude-motion/dronekit-hello.py	/^import numpy as np$/;"	kind:namespace	line:2
+np	../attitude-motion/simplified1-no-drag.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../opencv/basic-ops.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../opencv/drawing.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../opencv/ops-2.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../opencv/py-intro.py	/^import numpy as np$/;"	kind:namespace	line:2
+np	../opencv/threshold.py	/^import numpy as np$/;"	kind:namespace	line:1
+np	../opencv/video-1.py	/^import numpy as np$/;"	kind:namespace	line:3
+ops-2.py	../opencv/ops-2.py	1;"	kind:file	line:1
+plt	../opencv/py-intro.py	/^import matplotlib.pyplot as plt$/;"	kind:namespace	line:3
+pts	../opencv/drawing.py	/^pts = np.array([[10,5], [20,30], [70,20], [50,10]], np.int32)$/;"	kind:variable	line:14
+pts	../opencv/drawing.py	/^pts = pts.reshape((-1,1,2))$/;"	kind:variable	line:15
+px	../opencv/basic-ops.py	/^px = img[55,55]$/;"	kind:variable	line:7
+py-intro.py	../opencv/py-intro.py	1;"	kind:file	line:1
+roi	../opencv/basic-ops.py	/^roi = img[200:300, 200:300]$/;"	kind:variable	line:18
+roi	../opencv/ops-2.py	/^roi = img1[0:rows, 0:cols]$/;"	kind:variable	line:23
+scipy	../attitude-motion/dronekit-hello.py	/^import scipy.integrate as integrate$/;"	kind:namespace	line:3
+scipy	../attitude-motion/simplified1-no-drag.py	/^import scipy.integrate as integrate$/;"	kind:namespace	line:2
+simplified1-no-drag.py	../attitude-motion/simplified1-no-drag.py	1;"	kind:file	line:1
+snip	../opencv/basic-ops.py	/^snip = roi$/;"	kind:variable	line:19
+test	../attitude-motion/simplified1-no-drag.py	/^def test(thing):$/;"	kind:function	line:42
+test_with_time_step	../attitude-motion/simplified1-no-drag.py	/^    def test_with_time_step(self, pitch, roll, time_step):$/;"	kind:member	line:22
+thing1	../attitude-motion/simplified1-no-drag.py	/^thing1 = Localizer()$/;"	kind:variable	line:51
+threshold.py	../opencv/threshold.py	1;"	kind:file	line:1
+time	../attitude-motion/simplified1-no-drag.py	/^import time$/;"	kind:namespace	line:3
+update	../attitude-motion/simplified1-no-drag.py	/^    def update(self, pitch, roll):$/;"	kind:member	line:29
+update_horizontal_position_velocity	../attitude-motion/dronekit-hello.py	/^def update_horizontal_position_velocity(force, mass, time_step):$/;"	kind:function	line:50
+update_position	../attitude-motion/dronekit-hello.py	/^def update_position(pos0, v, t):$/;"	kind:function	line:62
+update_velocity	../attitude-motion/dronekit-hello.py	/^def update_velocity(v, a, t):$/;"	kind:function	line:59
+video-1.py	../opencv/video-1.py	1;"	kind:file	line:1
+watch	../opencv/ops-2.py	/^watch = cv2.imread("watch.jpg", cv2.IMREAD_COLOR)$/;"	kind:variable	line:6
+watch_fg	../opencv/ops-2.py	/^watch_fg = cv2.bitwise_and(watch, watch, mask=mask)$/;"	kind:variable	line:32
+watchgray	../opencv/ops-2.py	/^watchgray = cv2.cvtColor(watch, cv2.COLOR_BGR2GRAY)$/;"	kind:variable	line:24
+weighted	../opencv/ops-2.py	/^weighted = cv2.addWeighted(img1, 0.6, img2, 0.4, 0)$/;"	kind:variable	line:17
