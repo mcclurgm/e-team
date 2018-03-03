@@ -4,7 +4,7 @@ from geopy import distance
 # this needs to account for orientation of the drone
 # if I'm going to test with this data. Its x and mine don't align.
 class data_meters():
-    def __init__():
+    def __init__(self):
         self.degree_data = []
         self.meter_data = []
 
@@ -21,8 +21,8 @@ class data_meters():
             for refresh in data_reader:
                 lat = float(refresh[0]) - lat_base
                 long = float(refresh[1]) - long_base
-                pitch = float(refresh[1]) - pitch_base
-                roll = float(refresh[2]) - roll_base
+                pitch = float(refresh[2]) - pitch_base
+                roll = float(refresh[3]) - roll_base
 
                 self.degree_data.append([lat, long, pitch, roll])
 
@@ -33,7 +33,11 @@ class data_meters():
             long = (0, row[1])
             lat_meters = distance.vincenty(0, lat).meters
             long_meters = distance.vincenty(0, long).meters
-            # print [lat_meters, long_meters]
-            self.meter_data.append[lat_meters, long_meters, row[2], row[3]]
+            # print row[3]
+            print [lat_meters, long_meters, row[2], row[3]]
+            if len(self.meter_data) > 0:
+                print row[2] - self.meter_data[-1][2]
+            self.meter_data.append([lat_meters, long_meters, row[2], row[3]])
 
         # print self.meter_data
+thing = data_meters()

@@ -5,6 +5,9 @@ import time
 # I did all the integrations and solving ODEs by hand. I do not have forces
 # or anything else in here. I will take a photo of my work to check the math.
 # we should calibrate the angle to account for nonzero initial angle that doesn't move
+
+# axes: x: pitch (forward motion)
+#       y: roll (side-to-side)
 class Localizer():
 
     def __init__(self):
@@ -95,7 +98,8 @@ def test(thing):
     for i in range(0,101):
         print str(i) + ": "
         now = time.time()
-        thing.test_with_time_step(np.pi/4, np.pi/4, i)
+        # thing.update(np.pi/4, np.pi/4, i)
+        thing.update(0, 0, i)
         print time.time() - now
 
         print thing.vx
@@ -112,7 +116,7 @@ def test_with_real_time(thing):
         prev = now
         now = time.time()
         print now - begin
-        thing.test_with_real_time(np.pi/4, np.pi/4)
+        thing.test_with_real_time(np.pi/4, np.pi/4, 1/20)
         print thing.vx
         print thing.x
 

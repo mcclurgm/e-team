@@ -2,17 +2,21 @@ from simplified1_no_drag import Localizer
 from csv_parse import data_meters
 
 drone_data = data_meters()
-drone_meters = data_meters.meter_data
+drone_meters = drone_data.meter_data
 localizer = Localizer()
 
 # gps updates every 1/20 s
-time_step = 1/20
+time_step = 0.05
 
-vx = 0
-vy = 0
-x = 0
-y = 0
-
+count = 0
 for refresh in drone_meters:
+    print time_step
     # gps_x = 
-    pass
+    localizer.update(refresh[2], refresh[3], time_step)
+    print "round: pitch: " + str(refresh[2]) + " roll: " + str(refresh[3])
+    print "       x: " + str(localizer.x) + " y: " + str(localizer.y)
+    print "       n: " + str(refresh[1]) + " e: " + str(refresh[0])
+    print "       vx: " + str(localizer.vx) + " vy: " + str(localizer.vy)
+    count += 1
+    if count == 10:
+        break
