@@ -20,3 +20,8 @@ roll_rotation = np.matrix([1, 0, 0],
 
 Standard procedure: roll, then pitch, then yaw  
 Using matrix multiplication
+
+## The physics
+Rotation matrix converts pitch/roll axes to universal coordinates  
+TBD how doing the physics will work with this matrix form  
+I should look at Nyla's code to see what she did about this

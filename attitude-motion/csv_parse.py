@@ -3,7 +3,10 @@ from geopy import distance
 
 # this needs to account for orientation of the drone
 # if I'm going to test with this data. Its x and mine don't align.
+
+
 class data_meters():
+
     def __init__(self):
         self.degree_data = []
         self.meter_data = []
