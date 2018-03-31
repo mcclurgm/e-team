@@ -18,10 +18,27 @@ roll_rotation = np.matrix([1, 0, 0],
                           [0, np.sin(gamma), np.cos(gamma)])
 ```
 
-Standard procedure: roll, then pitch, then yaw  
+Standard procedure: roll, then pitch, then yaw  (yaw * pitch * roll)
 Using matrix multiplication
+
+```python
+total_rotation = np.dot(np.dot(yaw_rotation, pitch_rotation), roll_rotation)
+rotated_unit = np.dot(total_rotation, thrust_unit)
+```
 
 ## The physics
 Rotation matrix converts pitch/roll axes to universal coordinates  
 TBD how doing the physics will work with this matrix form  
 I should look at Nyla's code to see what she did about this
+
+* Multiply total_rotation by vector {0,0,1}: isolate right column
+    * `rotated_unit`
+* Solve formula `u_z * f == m * a` for `f`
+* Scale force unit vector
+```python
+vert = rotated_unit[2]
+f = (m * g) / vert
+f_vector = f * rotated_unit
+```
+    * Should I rename rotated_unit to f_hat?
+* Yay?

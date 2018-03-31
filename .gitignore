@@ -1,2 +1,3 @@
 attitude-motion/test-notebook.nb
 *.pyc
+*/.vscode
