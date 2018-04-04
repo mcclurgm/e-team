@@ -26,7 +26,7 @@ thrust_unit = np.array([[0],[0],[1]])
 
 alpha = 0
 beta = 0
-gamma = np.pi/4
+gamma = np.pi/6
 
 yaw_rotation = np.array([[np.cos(alpha), -np.sin(alpha), 0],
                             [np.sin(alpha), np.cos(alpha), 0],
@@ -42,6 +42,14 @@ total_rotation = np.dot(np.dot(yaw_rotation, pitch_rotation), roll_rotation)
 rotated_unit = np.dot(total_rotation, thrust_unit)
 print rotated_unit
 
+prop_mass = .056
+drone_mass = 1.518
+m = drone_mass + prop_mass
+g = 9.80655
+
 vert = rotated_unit[2]
 f = (m * g) / vert
 f_vector = f * rotated_unit
+
+print f
+print f_vector
