@@ -40,3 +40,8 @@ roll_rotation = np.array([[1, 0, 0],
 
 total_rotation = np.dot(np.dot(yaw_rotation, pitch_rotation), roll_rotation)
 rotated_unit = np.dot(total_rotation, thrust_unit)
+print rotated_unit
+
+vert = rotated_unit[2]
+f = (m * g) / vert
+f_vector = f * rotated_unit
