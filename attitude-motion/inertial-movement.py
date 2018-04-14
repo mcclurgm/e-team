@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.integrate as integrate
 from numpy import cos, sin
 
 class Localizer():
@@ -12,8 +13,21 @@ class Localizer():
         
         self.v = np.array([[0],[0],[0]])
         self.r = np.array([[0],[0],[0]])
-
+    
     def update(self, yaw, pitch, roll, time_step):
+        # self.euler(yaw, pitch, roll, time_step)
+        # Smaller step Euler method. This will not be the final version but the idea is there
+        a = self.force_vector(yaw, pitch, roll) / self.m
+        ax = lambda t: a[0]
+        ay = lambda t: a[1]
+        az = lambda t: a[2]
+        print integrate.quad(ax,0,time_step)
+        print integrate.quad(ay,0,time_step)
+        print integrate.quad(az,0,time_step)
+        # for i in range(0,20):
+        #     self.euler(yaw, pitch, roll, time_step/20)
+    
+    def euler(self, yaw, pitch, roll, time_step):
         a = self.force_vector(yaw, pitch, roll) / self.m
         vn = self.v + (a * time_step)
         rn = self.r + (self.v * time_step)
@@ -65,6 +79,8 @@ class Localizer():
 
         f = self.force_vector(yaw, pitch, roll)
         # print f
+        self.update(yaw, pitch, roll, 1.0)
+        return
 
         for i in range(0, 20):
             self.update(yaw, pitch, roll, 0.05)
