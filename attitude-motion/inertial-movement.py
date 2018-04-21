@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.integrate as integrate
 from numpy import cos, sin
+import time
 
 class Localizer():
     def __init__(self):
@@ -17,15 +18,29 @@ class Localizer():
     def update(self, yaw, pitch, roll, time_step):
         # self.euler(yaw, pitch, roll, time_step)
         # Smaller step Euler method. This will not be the final version but the idea is there
-        a = self.force_vector(yaw, pitch, roll) / self.m
-        ax = lambda t: a[0]
-        ay = lambda t: a[1]
-        az = lambda t: a[2]
-        print integrate.quad(ax,0,time_step)
-        print integrate.quad(ay,0,time_step)
-        print integrate.quad(az,0,time_step)
-        # for i in range(0,20):
-        #     self.euler(yaw, pitch, roll, time_step/20)
+        f = self.force_vector(yaw, pitch, roll)
+        a = f / self.m
+
+        v = self.vector_integrate(a, time_step)
+        print(v)
+
+        r = self.vector_integrate(v, time_step)
+        print(r)
+        for i in range(0,20):
+            self.euler(yaw, pitch, roll, time_step/20)
+        print('euler:\n' +
+               'v {0}\n'.format(self.v) +
+               'r {0}'.format(self.r))
+    
+    def vector_integrate(self, vector, time_step):
+        result_list = []
+        for i in range(0, len(vector)):
+            component_func = lambda t: vector[i]
+            component_integrate = integrate.quad(component_func, 0, time_step)
+            # integrate() returns tuple with result as 0, error as 1
+            result_list.append([component_integrate[0]])
+        result_vector = np.array(result_list)
+        return result_vector
     
     def euler(self, yaw, pitch, roll, time_step):
         a = self.force_vector(yaw, pitch, roll) / self.m
@@ -37,7 +52,7 @@ class Localizer():
 
     def force_vector(self, yaw, pitch, roll):
         f_hat = self.f_hat(yaw, pitch, roll)
-        # print f_hat
+        # print(f_hat)
         return self.get_force_magnitude(f_hat) * f_hat
 
     def get_force_magnitude(self, f_hat):
@@ -78,13 +93,12 @@ class Localizer():
         # print self.get_force_magnitude(f_hat)
 
         f = self.force_vector(yaw, pitch, roll)
-        # print f
-        self.update(yaw, pitch, roll, 1.0)
+        self.update(yaw, pitch, roll, 0.05)
         return
 
         for i in range(0, 20):
             self.update(yaw, pitch, roll, 0.05)
-            print self.position()
+            # print(self.position())
 
 localizer = Localizer()
 localizer.test()
