@@ -31,13 +31,23 @@ TBD how doing the physics will work with this matrix form
 I should look at Nyla's code to see what she did about this
 
 * Multiply total_rotation by vector {0,0,1}: isolate right column
-    * `rotated_unit`
+  * `rotated_unit`
 * Solve formula `u_z * f == m * a` for `f`
 * Scale force unit vector
+
 ```python
 vert = rotated_unit[2]
 f = (m * g) / vert
 f_vector = f * rotated_unit
 ```
-    * Should I rename rotated_unit to f_hat?
+
+* Should I rename rotated_unit to f_hat?
 * Yay?
+
+## Integration options
+### `scipy.integrate.solve_ivp()`
+
+### Attempt to do this by hand...
+```
+x = x0 + v0t + Integrate[a(t),{t,0,tf},{t,0,tf}]
+```
