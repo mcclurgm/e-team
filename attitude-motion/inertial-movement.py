@@ -37,12 +37,25 @@ class Localizer():
         v = self.vector_integrate(a, self.v, time_step)
         print('v')
         print(v)
-        self.v = v
 
-        r = self.vector_integrate(v, self.r, time_step)
+        r = self.double_integrate(a, self.r, time_step)
         print('r')
         print(r)
+
+        self.v = v
         self.r = r
+
+    # This agrees with Mathematica, I think. If the Mathematica way of doing it is right.
+    def double_integrate(self, vector, initial_outer, initial_, time_step):
+        result_list = []
+        for i in range(0, len(vector)):
+            component_func = lambda q, t: vector[i]
+            double_result = integrate.dblquad(component_func, 0, time_step, lambda t: 0, lambda t: t)
+            # integrate() returns tuple with result as 0, error as 1
+            component = double_result[0] + (initial_inner[i] * t) + initial_outer
+            result_list.append(component)
+        result_vector = np.array(result_list)
+        return result_vector
     
     def vector_integrate(self, vector, initial, time_step):
         result_list = []
@@ -118,7 +131,7 @@ class Localizer():
         a = self.force_vector(yaw, pitch, roll) / self.m
         v = self.vector_integrate(a, [0,0,0], 1.0)
         print('Total integrated v {0}'.format(v))
-        r = self.vector_integrate(v, [0,0,0], 1.0)
+        r = self.double_integrate(a, [0,0,0], [0,0,0], 1.0)
         print('Total integrated r {0}'.format(r))
 
 localizer = Localizer()

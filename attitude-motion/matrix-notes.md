@@ -45,9 +45,29 @@ f_vector = f * rotated_unit
 * Yay?
 
 ## Integration options
-### `scipy.integrate.solve_ivp()`
+### `scipy.dblquad`
+```python
+func = lambda x, y: x*y
+dblquad(func, 0, yf, lambda x: 0, lambda x: xf)
+```
+* First 2: outer limits
+  - Must be numbers
+* Second 2: inner limits
+  - Must be functions
+  - Can be lambdas
 
-### Attempt to do this by hand...
+#### My attempt:
+```python
+a_func = lambda q, t: a
+r = dblquad(a_func, 0, tf, lambda t: 0, lambda t: t)
+```
+This seems to work, although doing initial conditions is clumsy.
+
+### Using `scipy.integrate.solve_ivp()`
+According to one guy on GitHub, this is very slow. Should I be worried about that or just go with it?
+* I should be able to test it
+
+### Attempting to do this by hand...
 ```
 x = x0 + v0t + Integrate[a(t),{t,0,tf},{t,0,tf}]
 ```
