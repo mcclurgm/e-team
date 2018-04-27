@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import numpy as np
 import scipy.integrate as integrate
 from numpy import cos, sin
@@ -122,16 +124,18 @@ class Localizer():
         # self.update(yaw, pitch, roll, 0.05)
         # return
 
-        t = 0
         for i in range(0, 20):
             self.double_update(yaw, pitch, roll, 0.05)
-            t += 0.05
+            # t += 0.05
             # print(self.position())
-        print('total time {0}'.format(t))
+        # print('total time {0}'.format(t))
         a = self.force_vector(yaw, pitch, roll) / self.m
+        print('a {0}'.format(a))
         v = self.vector_integrate(a, [0,0,0], 1.0)
         print('Total integrated v {0}'.format(v))
+        t = time.time()
         r = self.double_integrate(a, [0,0,0], [0,0,0], 1.0)
+        print('Time to double integrate: {0}'.format(time.time() - t))
         print('Total integrated r {0}'.format(r))
 
 localizer = Localizer()
