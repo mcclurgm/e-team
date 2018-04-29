@@ -19,7 +19,9 @@ class Localizer():
         self.v_ode = np.array([[0],[0],[0]])
         self.r_ode = np.array([[0],[0],[0]])
 
-    # Attempting to implement double integrals, since the first method is wrong
+    # The latest version of update(), which is based on an ODE solver.
+    # This is more physically correct than double integrals
+    # and should be more future-proof.
     def ode_update(self, yaw, pitch, roll, time_step):
         f = self.force_vector(yaw, pitch, roll)
         a = f / self.m
@@ -40,7 +42,6 @@ class Localizer():
         a = f / self.m
 
         v = self.vector_integrate(a, self.v, time_step)
-
         r = self.double_integrate(a, self.r, self.v, time_step)
 
         self.v = v
@@ -68,23 +69,23 @@ class Localizer():
         result_vector = np.array(result_list)
         return result_vector
 
+    # I might want to break solving each component out into its own function
     def vector_solve(self, a, v_initial, r_initial, time_step):
         r = []
         v = []
         for i in range(0, len(v_initial)):
-            ode_evaluation_times = [time_step]
-
             r0 = r_initial.item(i)
             v0 = v_initial.item(i)
             a_component = a.item(i)
+
+            ode_evaluation_times = [time_step]
+
             # y[0] = r
             # y[1] = r' = v
             # Used array: [r, r']
             component = integrate.odeint(self.ode_function, [r0, v0], ode_evaluation_times, args=(a_component,))
             r.append([component.item(0)])
             v.append([component.item(1)])
-        # print('r {0}'.format(r))
-        # print('v {0}'.format(v))
         result_array = [np.array(r), np.array(v)]
         return result_array
 
@@ -114,14 +115,11 @@ class Localizer():
 
     def force_vector(self, yaw, pitch, roll):
         f_hat = self.f_hat(yaw, pitch, roll)
-        # print(f_hat)
         return self.get_force_magnitude(f_hat) * f_hat
 
     def get_force_magnitude(self, f_hat):
         f_z = f_hat[2]
-        # print f_z
         f = (self.m * self.g) / f_z
-        # f_vector = f * f_hat
         return f
 
     def f_hat(self, yaw, pitch, roll):
