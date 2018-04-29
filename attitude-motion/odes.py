@@ -28,6 +28,6 @@ def vector_func(q, t, acceleration):
 a_t = [0, 1]
 t = time.time()
 # sol = integrate.odeint(func, [0, 0], a_t, args=(a,))
-sol = integrate.odeint(func, [r, v], a_t, args=(a,))
+sol = integrate.odeint(func, [0, 0], a_t, args=(a,))
 print('Time to use ODE solver: {0}'.format(time.time() - t))
 print(sol)

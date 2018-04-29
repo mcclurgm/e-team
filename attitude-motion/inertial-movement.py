@@ -16,6 +16,8 @@ class Localizer():
 
         self.v = np.array([[0],[0],[0]])
         self.r = np.array([[0],[0],[0]])
+        self.v_ode = np.array([[0],[0],[0]])
+        self.r_ode = np.array([[0],[0],[0]])
 
     # Attempting to implement double integrals, since the first method is wrong
     def ode_update(self, yaw, pitch, roll, time_step):
@@ -27,10 +29,10 @@ class Localizer():
         # y[0] = r
         # y[1] = r' = v
         # Used array: [r, r']
-        sol = integrate.odeint(self.ode_function, [0, 0], ode_evaluation_times, args=(a,))
+        sol = self.vector_solve(a, self.v, self.r, time_step)
 
-        self.v = sol[0]
-        self.r = sol[1]
+        self.r_ode = sol[0]
+        self.v_ode = sol[1]
 
     # Attempting to implement double integrals, since the first method is wrong
     def double_update(self, yaw, pitch, roll, time_step):
@@ -38,12 +40,8 @@ class Localizer():
         a = f / self.m
 
         v = self.vector_integrate(a, self.v, time_step)
-        print('v')
-        print(v)
 
         r = self.double_integrate(a, self.r, self.v, time_step)
-        print('r')
-        print(r)
 
         self.v = v
         self.r = r
@@ -53,13 +51,9 @@ class Localizer():
         a = f / self.m
 
         v = self.vector_integrate(a, self.v, time_step)
-        print('v')
-        print(v)
         self.v = v
 
         r = self.vector_integrate(v, self.r, time_step)
-        print('r')
-        print(r)
         self.r = r
 
     # This agrees with Mathematica, I think. If the Mathematica way of doing it is right.
@@ -75,9 +69,10 @@ class Localizer():
         return result_vector
 
     def vector_solve(self, a, v_initial, r_initial, time_step):
-        result_list = []
+        r = []
+        v = []
         for i in range(0, len(v_initial)):
-            ode_evaluation_times = [0, time_step]
+            ode_evaluation_times = [time_step]
 
             r0 = r_initial.item(i)
             v0 = v_initial.item(i)
@@ -85,14 +80,17 @@ class Localizer():
             # y[0] = r
             # y[1] = r' = v
             # Used array: [r, r']
-            component = integrate.odeint(func, [r0, v0], ode_evaluation_times, args=(a_component,))
-            result_list.append(component)
-        result_vector = np.array(result_list)
-        return result_vector
+            component = integrate.odeint(self.ode_function, [r0, v0], ode_evaluation_times, args=(a_component,))
+            r.append([component.item(0)])
+            v.append([component.item(1)])
+        # print('r {0}'.format(r))
+        # print('v {0}'.format(v))
+        result_array = [np.array(r), np.array(v)]
+        return result_array
 
     def ode_function(self, r, t, a):
         q1 = r[1]
-        q2 = a.item(1)
+        q2 = a
         return [q1, q2]
 
     def vector_integrate(self, vector, initial, time_step):
@@ -148,20 +146,28 @@ class Localizer():
         return self.v
 
     def test2(self):
-        for i in range(0, 6):
-            for j in range(0, 6):
-                for k in range(0, 6):
+        for i in range(0, 7):
+            for j in range(0, 7):
+                for k in range(0, 7):
                     yaw = i * np.pi / 6
                     pitch = j * np.pi / 6
                     roll = k * np.pi / 6
 
                     for l in range(0, 20):
-                        integrate = self.double_update(yaw, pitch, roll, 0.05)
-                        ode = self.ode_update(yaw, pitch, roll, 0.05)
-                        if integrate != ode:
-                            print('Bad. Integrate: {0}\n     ODE: {1}'
-                                  .format(integrate, ode))
-                            break
+                        self.double_update(yaw, pitch, roll, 0.05)
+                        self.ode_update(yaw, pitch, roll, 0.05)
+                        if not np.array_equal(self.v, self.v_ode):
+                            print('FAIL Y {0} P {1} R {2}'.format(i, j, k))
+                            print('no v. Integrate: {0}\n     ODE: {1}'
+                                  .format(self.v, self.v_ode))
+                            return
+                        elif not np.array_equal(self.r, self.r_ode):
+                            print('FAIL Y {0} P {1} R {2}'.format(i, j, k))
+                            print('no v. Integrate: {0}\n     ODE: {1}'
+                                  .format(self.r, self.r_ode))
+                            return
+                        else:
+                            print('PASS Y {0} P {1} R {2}'.format(i, j, k))
     
     def test(self):
         yaw = 0
