@@ -13,10 +13,25 @@ class Localizer():
         self.g = 9.80655
 
         self.base_thrust_unit = np.array([[0],[0],[1]])
-        
+
         self.v = np.array([[0],[0],[0]])
         self.r = np.array([[0],[0],[0]])
-    
+
+    # Attempting to implement double integrals, since the first method is wrong
+    def ode_update(self, yaw, pitch, roll, time_step):
+        f = self.force_vector(yaw, pitch, roll)
+        a = f / self.m
+
+        ode_evaluation_times = [0, 1]
+
+        # y[0] = r
+        # y[1] = r' = v
+        # Used array: [r, r']
+        sol = integrate.odeint(self.ode_function, [0, 0], ode_evaluation_times, args=(a,))
+
+        self.v = sol[0]
+        self.r = sol[1]
+
     # Attempting to implement double integrals, since the first method is wrong
     def double_update(self, yaw, pitch, roll, time_step):
         f = self.force_vector(yaw, pitch, roll)
@@ -58,7 +73,28 @@ class Localizer():
             result_list.append(component)
         result_vector = np.array(result_list)
         return result_vector
-    
+
+    def vector_solve(self, a, v_initial, r_initial, time_step):
+        result_list = []
+        for i in range(0, len(v_initial)):
+            ode_evaluation_times = [0, time_step]
+
+            r0 = r_initial.item(i)
+            v0 = v_initial.item(i)
+            a_component = a.item(i)
+            # y[0] = r
+            # y[1] = r' = v
+            # Used array: [r, r']
+            component = integrate.odeint(func, [r0, v0], ode_evaluation_times, args=(a_component,))
+            result_list.append(component)
+        result_vector = np.array(result_list)
+        return result_vector
+
+    def ode_function(self, r, t, a):
+        q1 = r[1]
+        q2 = a.item(1)
+        return [q1, q2]
+
     def vector_integrate(self, vector, initial, time_step):
         result_list = []
         for i in range(0, len(vector)):
@@ -69,7 +105,7 @@ class Localizer():
             result_list.append(component)
         result_vector = np.array(result_list)
         return result_vector
-    
+
     def euler(self, yaw, pitch, roll, time_step):
         a = self.force_vector(yaw, pitch, roll) / self.m
         vn = self.v + (a * time_step)
@@ -89,10 +125,10 @@ class Localizer():
         f = (self.m * self.g) / f_z
         # f_vector = f * f_hat
         return f
-    
+
     def f_hat(self, yaw, pitch, roll):
         return np.dot(self.total_rotation(yaw, pitch, roll), self.base_thrust_unit)
-    
+
     def total_rotation(self, alpha, beta, gamma):
         yaw_rotation = np.array([[np.cos(alpha), -np.sin(alpha), 0],
                                     [np.sin(alpha), np.cos(alpha), 0],
@@ -107,10 +143,26 @@ class Localizer():
 
     def position(self):
         return self.r
-    
+
     def velocity(self):
         return self.v
 
+    def test2(self):
+        for i in range(0, 6):
+            for j in range(0, 6):
+                for k in range(0, 6):
+                    yaw = i * np.pi / 6
+                    pitch = j * np.pi / 6
+                    roll = k * np.pi / 6
+
+                    for l in range(0, 20):
+                        integrate = self.double_update(yaw, pitch, roll, 0.05)
+                        ode = self.ode_update(yaw, pitch, roll, 0.05)
+                        if integrate != ode:
+                            print('Bad. Integrate: {0}\n     ODE: {1}'
+                                  .format(integrate, ode))
+                            break
+    
     def test(self):
         yaw = 0
         pitch = 0
@@ -139,4 +191,4 @@ class Localizer():
         print('Total integrated r {0}'.format(r))
 
 localizer = Localizer()
-localizer.test()
+localizer.test2()
