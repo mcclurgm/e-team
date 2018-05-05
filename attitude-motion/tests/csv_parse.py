@@ -1,3 +1,4 @@
+import sys
 import csv
 from geopy import distance
 
@@ -11,23 +12,31 @@ class data_meters():
         self.degree_data = []
         self.meter_data = []
 
-        with open("solo_data.csv", "rb") as solo_data:
+        with open(sys.argv[1], "r") as solo_data:
             data_reader = csv.reader(solo_data, delimiter=",")
-            data_reader.next()
-            refresh = data_reader.next()
-
+            next(data_reader)
+            refresh = next(data_reader)
+            print(refresh)
+            
             lat_base = float(refresh[0])
             long_base = float(refresh[1])
-            pitch_base = float(refresh[2])
-            roll_base = float(refresh[3])
-            print [lat_base, long_base, pitch_base, roll_base]
+            alt_base = float(refresh[2])
+            pitch_base = float(refresh[3])
+            roll_base = float(refresh[4])
+            yaw_base = float(refresh[5])
+            time_base = float(refresh[6])
             for refresh in data_reader:
                 lat = float(refresh[0]) - lat_base
                 long = float(refresh[1]) - long_base
-                pitch = float(refresh[2]) - pitch_base
-                roll = float(refresh[3]) - roll_base
+                alt = float(refresh[2]) - alt_base
+                pitch = float(refresh[3]) - pitch_base
+                roll = float(refresh[4]) - roll_base
+                yaw = float(refresh[5]) - yaw_base
+                time = float(refresh[6]) - time_base
 
-                self.degree_data.append([lat, long, pitch, roll])
+                print([lat, long, alt, pitch, roll, yaw, time])
+
+                self.degree_data.append([lat, long, alt, pitch, roll, yaw, time])
 
         # print self.degree_data
 
@@ -36,11 +45,14 @@ class data_meters():
             long = (0, row[1])
             lat_meters = distance.vincenty(0, lat).meters
             long_meters = distance.vincenty(0, long).meters
-            # print row[3]
-            print [lat_meters, long_meters, row[2], row[3]]
+            # print(row[3])
+            # print([lat_meters, long_meters, row[2], row[3]])
             if len(self.meter_data) > 0:
-                print row[2] - self.meter_data[-1][2]
+                pass
+                # print(row[2] - self.meter_data[-1][2])
             self.meter_data.append([lat_meters, long_meters, row[2], row[3]])
 
         # print self.meter_data
+
+print(sys.argv)
 thing = data_meters()
