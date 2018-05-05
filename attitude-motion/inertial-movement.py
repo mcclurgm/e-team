@@ -20,8 +20,9 @@ class Localizer():
     # The latest version of update(), which is based on an ODE solver.
     # This is more physically correct than double integrals
     # and should be more future-proof.
-    def update(self, yaw, pitch, roll, time_step):
-        f = self.force_vector(yaw, pitch, roll)
+    def update(self, yaw, pitch, roll, altitude, time_step):
+        z_acceleration = get_acceleration(altitude, r[2], v[2], time_step)
+        f = self.force_vector(yaw, pitch, roll, z_acceleration)
         a = f / self.m
 
         ode_evaluation_times = [0, 1]
@@ -67,13 +68,13 @@ class Localizer():
         self.v = vn
         self.r = rn
 
-    def force_vector(self, yaw, pitch, roll):
+    def force_vector(self, yaw, pitch, roll, a_z):
         f_hat = self.f_hat(yaw, pitch, roll)
-        return self.get_force_magnitude(f_hat) * f_hat
+        return self.get_force_magnitude(f_hat, a_z) * f_hat
 
-    def get_force_magnitude(self, f_hat):
-        f_z = f_hat[2]
-        f = (self.m * self.g) / f_z
+    def get_force_magnitude(self, f_hat, a_z):
+        f_hat_z = f_hat[2]
+        f = (self.m * self.g) / f_hat_z
         return f
 
     def f_hat(self, yaw, pitch, roll):
@@ -90,6 +91,12 @@ class Localizer():
                                 [0, np.cos(gamma), -np.sin(gamma)],\
                                 [0, np.sin(gamma), np.cos(gamma)]])
         return np.dot(np.dot(yaw_rotation, pitch_rotation), roll_rotation)
+
+    def get_acceleration(self, current_z, initial_z, initial_vz, time_step):
+        v = (current_z - initial_z) / time_step
+        delta_v = v - initial_vz
+        az = delta_v / time_step
+        return az
 
     def position(self):
         return self.r
@@ -111,7 +118,7 @@ class Localizer():
 
                     for l in range(0, 20):
                         # self.double_update(yaw, pitch, roll, 0.05)
-                        self.update(yaw, pitch, roll, 0.05)
+                        self.update(yaw, pitch, roll, 0, 0.05)
                         if not np.array_equal(self.v, self.v):
                             print('FAIL Y {0} P {1} R {2}'.format(i, j, k))
                             print('no v. Integrate: {0}\n     ODE: {1}'
@@ -124,7 +131,7 @@ class Localizer():
                             return
                         else:
                             print('PASS Y {0} P {1} R {2}'.format(i, j, k))
-    
+
 '''    def test(self):
         yaw = 0
         pitch = 0

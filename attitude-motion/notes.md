@@ -28,6 +28,7 @@ def func(q, t):
   - This will return an array of [q1, q2] or [r, r']
 
 * My numbers:
+
 ```python
 a = [[0.],
     [-5.66181428],
@@ -41,3 +42,45 @@ def func(q, t):
 * This seems to be much faster than using `integrate.quad` somehow
   - `odeint`: 0.000112 s
   - `quad`: 0.001069 s
+
+## Vertical acceleration
+### How to find it
+* I have vertical positions
+  - The z position should be exact, if I do this right.
+  - **THIS SHOULD BE A TEST**
+* I have previous position and velocity
+* `da/dt = (v-v0)/(dt)`
+* `v0` is known
+* `dt` is known
+* I can find v (in z direction) from the two points and time step
+  - Previous vertical position should be exact, so I can use that
+  - Compare to something that's passed in
+* One worry: this might be noisy comopared to the smoothing
+  I can do with knowledge of the overall graph
+
+#### Take 1
+
+```python
+def get_acceleration(self, current_z, initial_z, initial_vz, time_step):
+    v = (current_z - initial_z) / time_step
+    delta_v = v - initial_vz
+    az = delta_v / time_step
+    return az
+```
+* Thoughts on naming
+  - Should I make this generic (ie, r and v?)
+  - Physics notation? (z0 or initial_z)
+  - delta_v and time_step are not consistent
+
+### How to use it
+```python
+Ftz + Fg = m * az
+Ftz = m * az  +  m * g
+Ftz = m (a + g)
+
+F * Fhat_z = m (a + g)
+F = m (a + g) / Fhat_z
+
+# Previously:
+F = (m * g / Fhat_z)
+```
