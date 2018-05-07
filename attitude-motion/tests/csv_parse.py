@@ -39,12 +39,13 @@ class data_meters():
                 self.degree_data.append([lat, long, alt, pitch, roll, yaw, time])
 
         # print self.degree_data
-
+        # Note: distance calculator has error of +/- 0.5%
         for row in self.degree_data:
             lat = (0, row[0])
             long = (0, row[1])
-            lat_meters = distance.vincenty(0, lat).meters
-            long_meters = distance.vincenty(0, long).meters
+            print("lat {0} long {1}".format(lat, long))
+            lat_meters = distance.distance((0,0), (lat,0)).meters
+            long_meters = distance.distance((0,0), (0,long)).meters
             # print(row[3])
             # print([lat_meters, long_meters, row[2], row[3]])
             if len(self.meter_data) > 0:
