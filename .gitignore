@@ -1,5 +1,7 @@
 # Stop telling me about those Mac Finder files, please
 .DS_Store
+._.DS_Store
+*/._.DS_Store
 
 # Compiled python files don't belong in a repository, since they're automatically
 # regenerated from the corresponding .py sources at runtime.
