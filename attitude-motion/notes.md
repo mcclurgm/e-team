@@ -84,3 +84,19 @@ F = m (a + g) / Fhat_z
 # Previously:
 F = (m * g / Fhat_z)
 ```
+
+
+## Testing
+* I don't think my testing method works at the moment, since it doesn't take into account great circles.
+* Here's my thoughts for the moment:
+
+```python
+base_location = (refresh[0], refresh[1]) # tuple of lat, long from the first refresh in CSV
+for refresh:
+    test_location = (refresh[0], refresh[1])
+    test_lat = (test_location[0], base_location[1])
+    test_long = (base_location[0], test_location[1])
+    lat_distance = distance.distance(base_location, test_lat).meters
+    long_distance = distance.distance(base_location, test_long).meters
+```
+ * Worry for the moment: I'm not sure if the lat/long will line up here with the yaw. I think we might have to align next time and run more tests.
