@@ -74,7 +74,7 @@ class Localizer():
 
     def get_force_magnitude(self, f_hat, a_z):
         f_hat_z = f_hat[2]
-        f = (self.m * self.g) / f_hat_z
+        f = (self.m * (a_z + self.g)) / f_hat_z
         return f
 
     def f_hat(self, yaw, pitch, roll):
