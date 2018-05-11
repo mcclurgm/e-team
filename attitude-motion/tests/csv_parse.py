@@ -37,6 +37,8 @@ class data_meters():
                 print([lat, long, alt, pitch, roll, yaw, time])
 
                 self.degree_data.append([lat, long, alt, pitch, roll, yaw, time])
+        
+        self.write_data()
 
         # print self.degree_data
         # Note: distance calculator has error of +/- 0.5%
@@ -54,6 +56,11 @@ class data_meters():
             self.meter_data.append([lat_meters, long_meters, row[2], row[3]])
 
         # print self.meter_data
+
+    def write_data(self):
+        with open('python-latlong.csv', 'wb') as outfile:
+            writer = csv.writer(outfile)
+            writer.writerows(self.degree_data)
 
 print(sys.argv)
 thing = data_meters()
